@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class ProductForm
@@ -36,7 +36,13 @@ class ProductForm
                     ->columnSpanFull(),
                 FileUpload::make('image')
                     ->image(),
-                Toggle::make('status')
+                Select::make('status')
+                    ->options([
+                        'baru' => 'Baru',
+                        'bekas' => 'Bekas',
+                        'digital' => 'Digital License',
+                    ])
+                    ->native(false)
                     ->required(),
             ]);
     }

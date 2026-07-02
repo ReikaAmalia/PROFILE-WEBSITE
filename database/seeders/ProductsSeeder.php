@@ -279,7 +279,7 @@ class ProductsSeeder extends Seeder
                     'stock' => $this->inferStock($item['status']),
                     'description' => $description,
                     'image' => null,
-                    'status' => true,
+                    'status' => $item['status'],
                 ]
             );
         }

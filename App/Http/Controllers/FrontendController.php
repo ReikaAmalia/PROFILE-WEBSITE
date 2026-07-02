@@ -34,7 +34,7 @@ class FrontendController extends Controller
                 }
 
                 $stock = (int) $product->stock;
-                $status = $stock === 99 ? 'digital' : ($stock <= 1 ? 'bekas' : 'baru');
+                $status = (string) $product->status;
 
                 return [
                     'id' => $product->id,

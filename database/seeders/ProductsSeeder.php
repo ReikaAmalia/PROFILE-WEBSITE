@@ -241,6 +241,22 @@ class ProductsSeeder extends Seeder
                     'Weight' => '320 gram',
                 ],
             ],
+            [
+                'id' => 13,
+                'name' => 'Webcam Logitech C920 HD Pro',
+                'cat' => 'aksesoris',
+                'catLabel' => 'Aksesoris',
+                'price' => 850000,
+                'status' => 'baru',
+                'date' => 9,
+                'desc' => 'Webcam Full HD 1080p dengan autofocus dan dual stereo mic, ideal untuk video conference dan streaming.',
+                'specs' => [
+                    'Resolution' => '1080p Full HD',
+                    'Frame Rate' => '30fps',
+                    'Connection' => 'USB 2.0',
+                    'Field of View' => '78°',
+                ],
+            ]
         ];
 
         foreach ($mpProducts as $item) {

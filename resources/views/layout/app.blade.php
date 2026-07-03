@@ -1545,7 +1545,7 @@
       background: #10B981;
     }
     .status-bekas {
-      background: var(--navy-mid);
+      background: #D97706;
     }
     .status-digital {
       background: #3B82F6;
@@ -1699,7 +1699,7 @@
     }
     .mp-modal-close:hover { background: var(--gray-mid); }
     .mp-modal-grid { display: grid; grid-template-columns: 1fr 1.15fr; }
-    .mp-modal-visual { background: linear-gradient(135deg, #1E293B, #334155); display: flex; align-items: center; justify-content: center; min-height: 300px; padding: 30px; }
+    .mp-modal-visual { background: linear-gradient(135deg, #1E293B, #334155); display: flex; align-items: center; justify-content: center; min-height: 300px; padding: 0; overflow: hidden; }
     .mp-modal-visual svg { width: 90px; height: 90px; stroke: rgba(255,255,255,0.3); fill: none; }
     .mp-modal-content { padding: 34px 32px; }
     .mp-modal-title { font-family: var(--font-head); font-size: 21px; font-weight: 800; color: var(--navy); line-height: 1.3; margin: 12px 0 4px; }

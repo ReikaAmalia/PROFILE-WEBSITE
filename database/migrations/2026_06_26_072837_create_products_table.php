@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->longText('description');
             $table->string('image')->nullable();
-            $table->boolean('status')->default(true);
+            $table->enum('status', ['baru', 'bekas', 'digital'])->default('baru');
             $table->timestamps();
         });
     }

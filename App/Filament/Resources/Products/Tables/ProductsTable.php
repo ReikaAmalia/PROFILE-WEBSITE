@@ -42,7 +42,7 @@ class ProductsTable
                     })
                     ->color(fn(?string $state) => match ($state) {
                         'baru' => 'success',
-                        'bekas' => 'warning',
+                        'bekas' => 'danger',
                         'digital' => 'info',
                         default => 'gray',
                     }),

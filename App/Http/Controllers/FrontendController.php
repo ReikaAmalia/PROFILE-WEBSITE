@@ -48,7 +48,7 @@ class FrontendController extends Controller
                     'specs' => $specs,
                     'brand' => $product->brand,
                     'stock' => $stock,
-                    'image' => $product->image,
+                    'image' => $product->image ? asset('storage/' . $product->image) : asset('images/placeholder.png'),
                 ];
             })
             ->values();

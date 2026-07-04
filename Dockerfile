@@ -39,9 +39,9 @@ RUN npm install
 RUN npm run build
 
 # Laravel optimizations
-RUN php artisan config:cache
-RUN php artisan route:cache || true
-RUN php artisan view:cache
+# RUN php artisan config:cache
+# RUN php artisan route:cache || true
+# RUN php artisan view:cache
 
 # Create storage symlink (ignore if it already exists)
 RUN php artisan storage:link || true

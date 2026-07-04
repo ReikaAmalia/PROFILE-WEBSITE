@@ -9,15 +9,19 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \
+    libwebp-dev \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     libicu-dev \
     nodejs \
-    npm
+    npm \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install \
+# Configure & install PHP extensions
+RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
+    && docker-php-ext-install \
+    gd \
     pdo \
     pdo_mysql \
     zip \

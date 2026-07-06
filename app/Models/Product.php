@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -21,10 +22,17 @@ class Product extends Model
         'status',
     ];
 
-
     public function category()
-    
-{
-    return $this->belongsTo(Category::class);
-}
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        return Storage::disk('s3')->url($this->image);
+    }
 }

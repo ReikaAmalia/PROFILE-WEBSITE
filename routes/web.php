@@ -25,22 +25,14 @@ Route::prefix('Editor')->group(function () {
 
 //debug sementara - HAPUS setelah selesai
 Route::get('/debug-s3', function () {
-    $result = [
-        'default_disk' => config('filesystems.default'),
-        'bucket'   => config('filesystems.disks.s3.bucket'),
-        'endpoint' => config('filesystems.disks.s3.endpoint'),
-        'url'      => config('filesystems.disks.s3.url'),
-        'region'   => config('filesystems.disks.s3.region'),
-        'key_terisi'    => ! empty(config('filesystems.disks.s3.key')),
-        'secret_terisi' => ! empty(config('filesystems.disks.s3.secret')),
+    return [
+        'livewire_temp_disk' => config('livewire.temporary_file_upload.disk') ?? 'default (' . config('filesystems.default') . ')',
+        'gd_loaded' => extension_loaded('gd'),
+        'gd_functions' => [
+            'imagecreatefromstring' => function_exists('imagecreatefromstring'),
+            'imagejpeg' => function_exists('imagejpeg'),
+        ],
+        'files_in_bucket_root' => Storage::disk('s3')->files(),
+        'files_in_products' => Storage::disk('s3')->files('products'),
     ];
-
-    try {
-        Storage::disk('s3')->put('debug-test.txt', 'halo dari production ' . now());
-        $result['upload_test'] = 'BERHASIL - cek bucket Supabase untuk debug-test.txt';
-    } catch (\Throwable $e) {
-        $result['upload_test'] = 'GAGAL: ' . $e->getMessage();
-    }
-
-    return $result;
 });

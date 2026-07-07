@@ -46,30 +46,27 @@ class ProductForm
 
                 FileUpload::make('image')
                     ->image()
-                    ->disk('public')
+                    ->disk('s3')
                     ->directory('products')
                     ->visibility('public')
                     ->imagePreviewHeight('100')
                     ->maxSize(5120)
                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
-                        $maxWidth = 800; // lebar maksimum simpan
-                        $quality  = 70;  // kualitas JPEG (0-100)
+                        $maxWidth = 800;
+                        $quality  = 70;
 
                         $img = @imagecreatefromstring(file_get_contents($file->getRealPath()));
 
-                        // Fallback: kalau format tidak bisa dibaca GD, simpan apa adanya
                         if (! $img) {
-                            return $file->store('products', 'public');
+                            return $file->store('products', 's3');
                         }
 
-                        // Resize kalau lebih lebar dari batas (tidak pernah upscale)
                         $w = imagesx($img);
                         $h = imagesy($img);
                         if ($w > $maxWidth) {
                             $img = imagescale($img, $maxWidth, (int) round($h * $maxWidth / $w));
                         }
 
-                        // Encode ke JPEG terkompresi
                         $filename = 'products/' . Str::uuid() . '.jpg';
 
                         ob_start();
@@ -77,7 +74,7 @@ class ProductForm
                         $binary = ob_get_clean();
                         imagedestroy($img);
 
-                        Storage::disk('public')->put($filename, $binary);
+                        Storage::disk('s3')->put($filename, $binary);
 
                         return $filename;
                     }),

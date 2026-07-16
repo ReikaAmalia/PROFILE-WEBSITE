@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Portfolio;
+use App\Models\Post;
 use App\Models\Product;
+use App\Models\SiteSetting;
 
 class FrontendController extends Controller
 {
     public function home()
     {
-        return view('frontend.home');
-    }
+        $setting = SiteSetting::first();
 
+        $portfolios = Portfolio::query()
+            ->latest('id')
+            ->take(6)
+            ->get();
+
+        $posts = Post::query()
+            ->published()
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('frontend.home', compact('setting', 'portfolios', 'posts'));
+    }
     public function marketplace()
     {
         $products = Product::query()

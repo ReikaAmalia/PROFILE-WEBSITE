@@ -2,29 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class Product extends Model
+class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
-        'name',
+        'title',
         'slug',
-        'brand',
-        'price',
-        'stock',
-        'description',
+        'category',
+        'excerpt',
+        'content',
         'image',
-        'status',
+        'published_at',
     ];
 
-    public function category()
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
+    public function scopePublished(Builder $query): Builder
     {
-        return $this->belongsTo(Category::class);
+        return $query
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
    public function getImageUrlAttribute(): ?string

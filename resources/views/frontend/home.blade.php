@@ -16,15 +16,19 @@
       <div class="hero-grid-layout">
         <!-- Left: copy -->
         <div>
-          <div class="hero-tag">Total IT Solution Provider</div>
-          <h1 class="hero-headline">
-            Akselerasi<br>
-            <span class="red-word">Digital 5.0</span><br>
-            <span class="accent-word">Tanpa Batas</span>
-          </h1>
-          <p class="hero-sub">
-            Membantu perusahaan dan pemerintahan bertransformasi melalui solusi teknologi modern — dari system integration, IoT, software development, hingga display solution profesional.
-          </p>
+        <div class="hero-tag">{{ $setting?->hero_tag ?: 'Total IT Solution Provider' }}</div>
+                  <h1 class="hero-headline">
+                    @if($setting?->hero_title)
+                      {!! nl2br(e($setting->hero_title)) !!}
+                    @else
+                      Akselerasi<br>
+                      <span class="red-word">Digital 5.0</span><br>
+                      <span class="accent-word">Tanpa Batas</span>
+                    @endif
+                  </h1>
+                  <p class="hero-sub">
+                    {{ $setting?->hero_subtitle ?: 'Membantu perusahaan dan pemerintahan bertransformasi melalui solusi teknologi modern — dari system integration, IoT, software development, hingga display solution profesional.' }}
+                  </p>
           <div class="hero-ctas">
             <a href="#contact" class="btn btn-red">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
@@ -151,9 +155,13 @@
         <div class="section-label">Tentang Kami</div>
         <h2 class="section-title">Inter G Queen<br><span>Bumindo</span></h2>
         <p class="about-body">
-          Seiring perkembangan revolusi teknologi 5.0, Inter G hadir menjawab tantangan dengan konsep <strong>Total IT Solution</strong>. 
-          Kami menyediakan berbagai solusi untuk memenuhi segala kebutuhan teknologi — baik pemerintahan maupun perusahaan — mulai dari otomasi, big data, IoT, 
-          hingga Artificial Intelligence.
+          @if($setting?->about_text)
+            {!! nl2br(e($setting->about_text)) !!}
+          @else
+            Seiring perkembangan revolusi teknologi 5.0, Inter G hadir menjawab tantangan dengan konsep <strong>Total IT Solution</strong>. 
+            Kami menyediakan berbagai solusi untuk memenuhi segala kebutuhan teknologi — baik pemerintahan maupun perusahaan — mulai dari otomasi, big data, IoT, 
+            hingga Artificial Intelligence.
+          @endif
         </p>
         <!-- Stats -->
         <div class="about-stats">
@@ -201,7 +209,7 @@
     <div class="services-header reveal">
       <div class="section-label">Layanan Kami</div>
       <h2 class="section-title">General <span>Services</span></h2>
-      <p class="section-sub">Solusi teknologi komprehensif yang dirancang khusus untuk kebutuhan pemerintahan dan perusahaan modern.</p>
+      <p class="section-sub">{{ $setting?->services_intro ?: 'Solusi teknologi komprehensif yang dirancang khusus untuk kebutuhan pemerintahan dan perusahaan modern.' }}</p>
     </div>
     <div class="services-grid">
 
@@ -347,6 +355,30 @@
       <a href="#contact" class="btn btn-navy reveal">Lihat Semua Project →</a>
     </div>
     <div class="portfolio-grid">
+      @if(isset($portfolios) && $portfolios->isNotEmpty())
+        @foreach($portfolios as $item)
+          <div class="portfolio-card reveal">
+            <div class="portfolio-thumb" style="background:linear-gradient(135deg,#1e293b,#0F172A);position:relative;overflow:hidden">
+              @if($item->image_url)
+                <img src="{{ $item->image_url }}" alt="{{ $item->title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" loading="lazy">
+              @else
+                <div class="portfolio-thumb-inner">
+                  <div class="portfolio-thumb-icon">🖥️</div>
+                  <div class="portfolio-thumb-label">{{ Str::upper($item->category ?: 'PROJECT') }}</div>
+                </div>
+              @endif
+              <div class="portfolio-overlay">
+                <div class="portfolio-overlay-btn">Lihat Detail</div>
+              </div>
+            </div>
+            <div class="portfolio-info">
+              <div class="portfolio-cat">{{ $item->category }}</div>
+              <div class="portfolio-name">{{ $item->title }}</div>
+              <p class="portfolio-desc">{{ Str::limit($item->description, 140) }}</p>
+            </div>
+          </div>
+        @endforeach
+      @else
 
       <div class="portfolio-card reveal">
         <div class="portfolio-thumb" style="background:linear-gradient(135deg,#1e293b,#0F172A)">
@@ -447,12 +479,13 @@
           <div class="portfolio-cat">IoT Solution</div>
           <div class="portfolio-name">Radar Traffic Counting</div>
           <p class="portfolio-desc">Sensor radar presisi tinggi untuk analisis kendaraan dan pola lalu lintas — mendukung pengambilan keputusan berbasis data.</p>
-        </div>
-      </div>
+                  </div>
+                </div>
 
-    </div>
-  </div>
-</section>
+                @endif
+              </div>
+            </div>
+          </section>
 
 
 
@@ -468,7 +501,33 @@
       </div>
       <a href="#" class="btn btn-navy reveal">Semua Artikel →</a>
     </div>
-    <div class="blog-grid">
+<div class="blog-grid">
+      @if(isset($posts) && $posts->isNotEmpty())
+        @foreach($posts as $post)
+          <div class="blog-card reveal">
+            <div class="blog-thumb" style="position:relative;overflow:hidden">
+              @if($post->image_url)
+                <img src="{{ $post->image_url }}" alt="{{ $post->title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" loading="lazy">
+              @else
+                <div class="blog-thumb-emoji">📰</div>
+                <div class="blog-thumb-bar"></div>
+              @endif
+            </div>
+            <div class="blog-meta">
+              <div class="blog-cat">{{ $post->category }}</div>
+              <div class="blog-date">{{ $post->published_at?->translatedFormat('d F Y') }}</div>
+              <div class="blog-title">{{ $post->title }}</div>
+              <p class="blog-excerpt">{{ $post->excerpt ?: Str::limit(strip_tags((string) $post->content), 140) }}</p>
+            </div>
+            <div class="blog-footer">
+              <a href="#" class="blog-read-more">
+                Baca Selengkapnya
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              </a>
+            </div>
+          </div>
+        @endforeach
+      @else
       <div class="blog-card reveal">
         <div class="blog-thumb">
           <div class="blog-thumb-emoji">🌐</div>
@@ -526,6 +585,7 @@
           <span style="font-size:12px;color:var(--gray-text)">6 min read</span>
         </div>
       </div>
+      @endif
     </div>
   </div>
 </section>
@@ -546,32 +606,44 @@
           Siap membantu Anda bertransformasi digital. Ceritakan kebutuhan Anda dan kami siapkan solusi terbaik.
         </p>
         <div class="contact-info-list">
-          <div class="contact-info-item reveal">
+<div class="contact-info-item reveal">
             <div class="contact-info-icon">📞</div>
             <div>
               <div class="contact-info-label">Telepon</div>
-              <div class="contact-info-val">+62 341 400 272</div>
+              <div class="contact-info-val">{{ $setting?->phone ?: '+62 341 400 272' }}</div>
             </div>
           </div>
           <div class="contact-info-item reveal">
             <div class="contact-info-icon">💬</div>
             <div>
               <div class="contact-info-label">WhatsApp</div>
-              <div class="contact-info-val">+62 812-3356-956</div>
+              <div class="contact-info-val">
+                @if($setting?->whatsapp)
+                  <a href="{{ $setting->whatsapp_link }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">{{ $setting->whatsapp }}</a>
+                @else
+                  +62 812-3356-956
+                @endif
+              </div>
             </div>
           </div>
           <div class="contact-info-item reveal">
             <div class="contact-info-icon">🌐</div>
             <div>
               <div class="contact-info-label">Website</div>
-              <div class="contact-info-val">interg.co.id</div>
+              <div class="contact-info-val">{{ $setting?->website ?: 'interg.co.id' }}</div>
             </div>
           </div>
           <div class="contact-info-item reveal">
             <div class="contact-info-icon">📍</div>
             <div>
               <div class="contact-info-label">Alamat</div>
-              <div class="contact-info-val">Perum Permata Jingga Blok AA No. 27,<br>Tunggulwulung, Lowokwaru, Kota Malang 65143</div>
+              <div class="contact-info-val">
+                @if($setting?->address)
+                  {!! nl2br(e($setting->address)) !!}
+                @else
+                  Perum Permata Jingga Blok AA No. 27,<br>Tunggulwulung, Lowokwaru, Kota Malang 65143
+                @endif
+              </div>
             </div>
           </div>
         </div>

@@ -264,6 +264,10 @@
       color: var(--white);
       background: rgba(255,255,255,0.08);
     }
+    .nav-links a.active {
+      color: var(--white);
+      background: rgba(255,255,255,0.1);
+    }
     .nav-cta {
       margin-left: 12px;
     }
@@ -1777,10 +1781,10 @@
           <li><a href="{{ Request::routeIs('home') ? '#hero' : route('home').'#hero' }}">Home</a></li>
           <li><a href="{{ Request::routeIs('home') ? '#about' : route('home').'#about' }}" onclick="forceNavSolid()">About Us</a></li>
           <li><a href="{{ Request::routeIs('home') ? '#services' : route('home').'#services' }}" onclick="forceNavSolid()">Services</a></li>
-          <li><a href="{{ Request::routeIs('home') ? '#portfolio' : route('home').'#portfolio' }}" onclick="forceNavSolid()">Portfolio</a></li>
-          <li><a href="{{ Request::routeIs('home') ? '#blog' : route('home').'#blog' }}" onclick="forceNavSolid()">Blog</a></li>
+          <li><a href="{{ Request::routeIs('home') ? '#portfolio' : route('home').'#portfolio' }}" onclick="forceNavSolid()" class="{{ Request::routeIs('portfolio') ? 'active' : '' }}">Portfolio</a></li>
+          <li><a href="{{ Request::routeIs('home') ? '#blog' : route('home').'#blog' }}" onclick="forceNavSolid()" class="{{ Request::routeIs('blog') ? 'active' : '' }}">Blog</a></li>
           <li><a href="{{ Request::routeIs('home') ? '#contact' : route('home').'#contact' }}" onclick="forceNavSolid()">Contact</a></li>
-          <li><a href="{{ route('marketplace') }}">Marketplace</a></li>
+          <li><a href="{{ route('marketplace') }}" class="{{ Request::routeIs('marketplace') ? 'active' : '' }}">Marketplace</a></li>
         </ul>
         <!-- CTA -->
         <a href="{{ Request::routeIs('home') ? '#contact' : route('home').'#contact' }}" class="btn btn-red nav-cta">Konsultasi Gratis</a>

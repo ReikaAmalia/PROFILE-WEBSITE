@@ -21,11 +21,35 @@ class FrontendController extends Controller
         $posts = Post::query()
             ->published()
             ->latest('published_at')
-            ->take(3)
+            ->take(6)
             ->get();
 
         return view('frontend.home', compact('setting', 'portfolios', 'posts'));
     }
+
+    public function blog()
+    {
+        $setting = SiteSetting::first();
+
+        $posts = Post::query()
+            ->published()
+            ->latest('published_at')
+            ->paginate(9);
+
+        return view('frontend.blog', compact('setting', 'posts'));
+    }
+
+    public function portfolio()
+    {
+        $setting = SiteSetting::first();
+
+        $portfolios = Portfolio::query()
+            ->latest('id')
+            ->paginate(9);
+
+        return view('frontend.portfolio', compact('setting', 'portfolios'));
+    }
+    
     public function marketplace()
     {
         $products = Product::query()

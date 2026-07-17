@@ -10,6 +10,8 @@ Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/services', [FrontendController::class, 'services'])->name('services');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
+Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
+Route::get('/portfolio', [FrontendController::class, 'portfolio'])->name('portfolio');
 
 Route::get('/marketplace', [FrontendController::class, 'marketplace'])->name('marketplace');
 

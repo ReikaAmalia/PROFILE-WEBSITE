@@ -352,7 +352,7 @@
         <div class="section-label">Portfolio</div>
         <h2 class="section-title">Project <span>Unggulan</span></h2>
       </div>
-      <a href="#contact" class="btn btn-navy reveal">Lihat Semua Project →</a>
+      <a href="{{ route('portfolio') }}" class="btn btn-navy reveal">Lihat Semua Project →</a>
     </div>
     <div class="portfolio-grid">
       @if(isset($portfolios) && $portfolios->isNotEmpty())
@@ -499,7 +499,7 @@
         <div class="section-label">Blog & Insight</div>
         <h2 class="section-title">Artikel <span>Terkini</span></h2>
       </div>
-      <a href="#" class="btn btn-navy reveal">Semua Artikel →</a>
+      <a href="{{ route('blog') }}" class="btn btn-navy reveal">Semua Artikel →</a>
     </div>
 <div class="blog-grid">
       @if(isset($posts) && $posts->isNotEmpty())

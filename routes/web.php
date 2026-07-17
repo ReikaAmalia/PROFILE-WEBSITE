@@ -26,15 +26,15 @@ Route::prefix('Editor')->group(function () {
 });
 
 //debug sementara - HAPUS setelah selesai
-Route::get('/debug-s3', function () {
-    return [
-        'livewire_temp_disk' => config('livewire.temporary_file_upload.disk') ?? 'default (' . config('filesystems.default') . ')',
-        'gd_loaded' => extension_loaded('gd'),
-        'gd_functions' => [
-            'imagecreatefromstring' => function_exists('imagecreatefromstring'),
-            'imagejpeg' => function_exists('imagejpeg'),
-        ],
-        'files_in_bucket_root' => Storage::disk('s3')->files(),
-        'files_in_products' => Storage::disk('s3')->files('products'),
-    ];
-});
+// Route::get('/debug-s3', function () {
+//     return [
+//         'livewire_temp_disk' => config('livewire.temporary_file_upload.disk') ?? 'default (' . config('filesystems.default') . ')',
+//         'gd_loaded' => extension_loaded('gd'),
+//         'gd_functions' => [
+//             'imagecreatefromstring' => function_exists('imagecreatefromstring'),
+//             'imagejpeg' => function_exists('imagejpeg'),
+//         ],
+//         'files_in_bucket_root' => Storage::disk('s3')->files(),
+//         'files_in_products' => Storage::disk('s3')->files('products'),
+//     ];
+// });

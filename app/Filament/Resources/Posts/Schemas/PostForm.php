@@ -53,6 +53,7 @@ class PostForm
                     ->imagePreviewHeight('100')
                     ->maxSize(5120)
                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                        \Illuminate\Support\Facades\Log::info('Upload diproses', ['file' => $file->getClientOriginalName()]);
                         $maxWidth = 800;
                         $quality  = 70;
 
@@ -75,7 +76,11 @@ class PostForm
                         $binary = ob_get_clean();
                         imagedestroy($img);
 
-                        Storage::disk('s3')->put($filename, $binary);
+                        $saved = Storage::disk('s3')->put($filename, $binary);
+
+                        if ($saved === false) {
+                            throw new \RuntimeException('Gagal mengunggah gambar ke storage. Periksa konfigurasi Supabase.');
+                        }
 
                         return $filename;
                     }),

@@ -74,7 +74,11 @@ class ProductForm
                         $binary = ob_get_clean();
                         imagedestroy($img);
 
-                        Storage::disk('s3')->put($filename, $binary);
+                        $saved = Storage::disk('s3')->put($filename, $binary);
+
+                        if ($saved === false) {
+                            throw new \RuntimeException('Gagal mengunggah gambar ke storage. Periksa konfigurasi Supabase.');
+                        }
 
                         return $filename;
                     }),

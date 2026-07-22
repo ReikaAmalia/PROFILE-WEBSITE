@@ -1751,7 +1751,7 @@
     <a href="{{ Request::routeIs('home') ? '#portfolio' : route('home').'#portfolio' }}" onclick="closeMobileNav()">Portfolio</a>
     <a href="{{ Request::routeIs('home') ? '#blog' : route('home').'#blog' }}" onclick="closeMobileNav()">Blog</a>
     <a href="{{ Request::routeIs('home') ? '#contact' : route('home').'#contact' }}" onclick="closeMobileNav()">Contact</a>
-    <a href="{{ route('marketplace') }}" onclick="closeMobileNav()">Marketplace</a>
+    <a href="{{ Request::routeIs('home') ? '#marketplace' : route('home').'#marketplace' }}" onclick="closeMobileNav()">Marketplace</a>
   </nav>
 
   <!-- ============================================================
@@ -1784,7 +1784,7 @@
           <li><a href="{{ Request::routeIs('home') ? '#portfolio' : route('home').'#portfolio' }}" onclick="forceNavSolid()" class="{{ Request::routeIs('portfolio') ? 'active' : '' }}">Portfolio</a></li>
           <li><a href="{{ Request::routeIs('home') ? '#blog' : route('home').'#blog' }}" onclick="forceNavSolid()" class="{{ Request::routeIs('blog') ? 'active' : '' }}">Blog</a></li>
           <li><a href="{{ Request::routeIs('home') ? '#contact' : route('home').'#contact' }}" onclick="forceNavSolid()">Contact</a></li>
-          <li><a href="{{ route('marketplace') }}" class="{{ Request::routeIs('marketplace') ? 'active' : '' }}">Marketplace</a></li>
+          <li><a href="{{ Request::routeIs('home') ? '#marketplace' : route('home').'#marketplace' }}" onclick="forceNavSolid()" class="{{ Request::routeIs('marketplace') ? 'active' : '' }}">Marketplace</a></li>
         </ul>
         <!-- CTA -->
         <a href="{{ Request::routeIs('home') ? '#contact' : route('home').'#contact' }}" class="btn btn-red nav-cta">Konsultasi Gratis</a>
@@ -1926,29 +1926,47 @@
     }
 
     @if(Request::routeIs('home'))
-    /* ---- Smooth active nav highlight ---- */
+    /* ---- Smooth active nav highlight (scrollspy) ---- */
     const sections = document.querySelectorAll('section[id]');
     const navAnchors = document.querySelectorAll('.nav-links a');
 
+    function setActiveNav(id) {
+      navAnchors.forEach(a => {
+        const href = a.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const isActive = href === `#${id}`;
+          a.style.color = isActive ? '#fff' : 'rgba(255,255,255,0.65)';
+          a.style.background = isActive ? 'rgba(255,255,255,0.1)' : '';
+        }
+      });
+    }
+
+    /* Use a thin horizontal "detection band" near the middle of the viewport
+       instead of a fixed visibility percentage. A fixed threshold (e.g. 0.4)
+       only fires for sections shorter than ~2.5x the viewport height, so very
+       tall sections (like Marketplace with many product cards) would never
+       cross it and the previously-active nav item would stay stuck. Shrinking
+       the observed area with rootMargin makes this height-independent. */
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          navAnchors.forEach(a => {
-            const href = a.getAttribute('href');
-            if (href && href.startsWith('#')) {
-              a.style.color = href === `#${entry.target.id}`
-                ? '#fff'
-                : 'rgba(255,255,255,0.65)';
-              a.style.background = href === `#${entry.target.id}`
-                ? 'rgba(255,255,255,0.1)'
-                : '';
-            }
-          });
+          setActiveNav(entry.target.id);
         }
       });
-    }, { threshold: 0.4 });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
 
     sections.forEach(s => sectionObserver.observe(s));
+
+    /* Fallback: once the page is scrolled all the way to the bottom, force the
+       last section's nav item active — covers cases where the last section
+       ends right as the footer begins, before it would otherwise cross the
+       detection band. */
+    window.addEventListener('scroll', () => {
+      const scrolledToBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 2;
+      if (scrolledToBottom && sections.length) {
+        setActiveNav(sections[sections.length - 1].id);
+      }
+    }, { passive: true });
     @endif
   </script>
 

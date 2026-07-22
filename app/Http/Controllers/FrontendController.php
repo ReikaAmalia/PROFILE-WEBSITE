@@ -24,7 +24,9 @@ class FrontendController extends Controller
             ->take(6)
             ->get();
 
-        return view('frontend.home', compact('setting', 'portfolios', 'posts'));
+        $products = $this->getMarketplaceProducts();
+
+        return view('frontend.home', compact('setting', 'portfolios', 'posts', 'products'));
     }
 
     public function blog()
@@ -52,7 +54,19 @@ class FrontendController extends Controller
     
     public function marketplace()
     {
-        $products = Product::query()
+        $products = $this->getMarketplaceProducts();
+
+        return view('frontend.marketplace', compact('products'));
+    }
+
+    /**
+     * Build the marketplace product list used both on the standalone
+     * marketplace page and inline on the home page (below the Contact
+     * section), so both stay in sync.
+     */
+    private function getMarketplaceProducts()
+    {
+        return Product::query()
             ->with('category')
             ->latest('id')
             ->get()
@@ -91,7 +105,5 @@ class FrontendController extends Controller
                 ];
             })
             ->values();
-
-        return view('frontend.marketplace', compact('products'));
     }
 }
